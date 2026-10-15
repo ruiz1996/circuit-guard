@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e9eddf">
+  <title>回路守卫 · Circuit Guard</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="engine.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <nav class="rail" aria-label="主导航">
+      <a class="brand" href="#" aria-label="回路守卫首页"><span>◈</span></a>
+      <div class="rail-links">
+        <button class="nav-button active" data-view="battle" title="防线"><span data-icon="battle"></span><small>防线</small></button>
+        <button class="nav-button" data-view="research" title="永久研究"><span data-icon="research"></span><small>研究</small><i id="research-dot"></i></button>
+        <button class="nav-button" data-view="maps" title="选择地图"><span data-icon="map"></span><small>地图</small></button>
+      </div>
+      <button class="nav-button help-nav" id="help-button" title="操作指南"><span data-icon="help"></span><small>指南</small></button>
+      <div class="rail-foot">CG / 01</div>
+    </nav>
+
+    <main>
+      <header class="page-header">
+        <div class="heading"><div class="eyebrow">CIRCUIT GUARD <span> / </span> 无尽塔防实验</div><h1>回路守卫<span class="version">本地单机版</span></h1></div>
+        <div class="header-right"><span class="save-status"><i></i><span id="save-label">自动保存已就绪</span></span><button class="icon-button" id="sound-button" aria-label="开启音效" title="开启音效"><span data-icon="muted"></span></button></div>
+      </header>
+
+      <section class="battle-layout">
+        <div class="battle-main">
+          <div class="mission-bar"><div><span class="mission-num" id="map-number">01</span><div><h2 id="map-title">翡翠回路</h2><span class="muted" id="map-subtitle">曲折的路径，留给你思考的空间。</span></div></div><button class="text-button" id="new-run-button"><span data-icon="restart"></span>重新出发</button></div>
+          <div class="stats-strip">
+            <div class="stat"><span class="stat-icon coin-icon" data-icon="coin"></span><div><small>建造资金</small><strong id="coins">260</strong></div></div>
+            <div class="stat"><span class="stat-icon ore-icon" data-icon="ore"></span><div><small>研究晶体 <em>永久</em></small><strong id="ore">0</strong></div></div>
+            <div class="stat"><span class="stat-icon life-icon" data-icon="heart"></span><div><small>核心完整度</small><strong><span id="lives">20</span><span class="stat-unit" id="max-lives"> / 20</span></strong></div></div>
+            <div class="stat wave-stat"><span class="stat-icon wave-icon" data-icon="waves"></span><div><small>当前波次</small><strong><span id="wave">00</span><span class="stat-unit"> / ∞</span></strong></div></div>
+          </div>
+
+          <div class="board-card">
+            <div class="board-topline"><span><i class="live-dot"></i><span id="battle-status">部署阶段</span></span><span class="board-coordinate">SECTOR <span id="sector">E-01</span> <b>·</b> <span id="enemy-count">0</span> 个敌人</span></div>
+            <div class="canvas-wrap" id="canvas-wrap"><canvas id="board" aria-label="塔防战场，选择防御塔后点击空地建造" tabindex="0"></canvas><div id="board-hint" class="board-hint"><span data-icon="cursor"></span><span>选择右侧防御塔，点击空地建立防线</span><button id="dismiss-hint" aria-label="关闭提示">×</button></div><div id="toast" class="toast" role="status"></div></div>
+            <div class="board-legend"><span><i class="legend-dot entrance"></i>敌人入口</span><span><i class="legend-dot exit"></i>能量核心</span><span><i class="legend-dot crystal"></i>晶体矿脉</span><span class="legend-tip">滚动世界之外，守住这条回路。</span></div>
+          </div>
+
+          <div class="wave-control"><div class="wave-info"><div class="eyebrow" id="next-wave-label">NEXT WAVE / 01</div><div id="next-wave-info">常规单位 · 8 个敌人</div></div><div class="playback"><button class="auto-button" id="auto-button" aria-pressed="false" title="自动开始下一波">自动 <span class="toggle"></span></button><div class="speed-control" aria-label="游戏速度"><button data-speed="1" class="active">1×</button><button data-speed="2">2×</button><button data-speed="3">3×</button></div><button class="icon-button pause-button" id="pause-button" aria-label="暂停" title="暂停 / 继续"><span data-icon="pause"></span></button></div><button class="start-button" id="start-wave"><span data-icon="play"></span><span id="start-label">开始第 1 波</span><kbd>空格</kbd></button></div>
+          <footer class="battle-footer"><span>独立原创 · 离线运行 · 存档保存在此浏览器</span><span>最高纪录 <strong id="best-wave">0</strong> 波 <b>·</b> 击破 <strong id="kills">0</strong></span></footer>
+        </div>
+
+        <aside class="arsenal"><div class="panel-title"><h2>部署防线</h2><span>ARSENAL / 06</span></div><p class="panel-intro">每一种火力，都有它的位置。</p><div class="tower-grid" id="tower-grid"></div>
+          <section class="selection-panel" id="selection-panel"></section>
+          <div class="field-note"><span data-icon="spark"></span><div><strong>指挥官笔记</strong><p id="field-note">转角能覆盖更长的路线。将减速与范围伤害搭配，效果会更好。</p></div></div>
+          <button class="research-shortcut" id="research-shortcut"><span data-icon="research"></span><div><strong>让每一场战斗都有积累</strong><span>用晶体解锁永久研究</span></div><span>↗</span></button>
+        </aside>
+      </section>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="modal-backdrop" hidden><section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><div><div class="eyebrow" id="modal-eyebrow"></div><h2 id="modal-title"></h2></div><button class="icon-button" id="close-modal" aria-label="关闭"><span data-icon="close"></span></button></div><div id="modal-content"></div></section></div>
+</body>
+</html>

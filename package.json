@@ -1,0 +1,11 @@
+{
+  "name": "circuit-guard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An original offline tower defense game with endless waves and persistent research.",
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node --test tests/engine.test.cjs",
+    "check": "node --check engine.js && node --check app.js && node --check server.cjs"
+  }
+}
